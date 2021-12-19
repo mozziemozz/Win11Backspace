@@ -16,4 +16,7 @@ Place the folder `win11backspace` in your `C:\Temp` folder. Right click the shor
 You may want to place the files in a different folder. Open the shortcuts properties and adjust the file path to your needs.
 
 # Notes / Issues
-This method only works with apps which support going back by backspace like Windows Explorer or Microsoft Photos. Based on my tests, it does not work in Edge. 
+This method only works with apps which support going back by backspace like Windows Explorer or Microsoft Photos. Based on my tests, it does not work in Edge.
+
+# Rec Bin
+The files in the second folder work the exact same way, this will allow you to pin the recycle bin to your taskbar.
