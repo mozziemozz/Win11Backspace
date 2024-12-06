@@ -53,15 +53,14 @@ if ($offset -ge 1) {
 $Message = @"
 
 $dateTimeString
-Timezone: $timeZone
-UTC Offset: $offset
+$timeZone (UTC $offset)
 "@
 $Title = "System Time Now"
 
 [void] [System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
 $balloonTip = New-Object System.Windows.Forms.NotifyIcon
 $balloonTip.Icon = [System.Drawing.SystemIcons]::Information
-$balloonTip.BalloonTipIcon = "Info"
+# $balloonTip.BalloonTipIcon = "Info"
 $balloonTip.BalloonTipTitle = $Title
 $balloonTip.BalloonTipText = $Message 
 $balloonTip.Visible = $True

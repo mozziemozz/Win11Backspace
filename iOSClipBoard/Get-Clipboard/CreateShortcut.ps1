@@ -1,6 +1,6 @@
 <#
     .SYNOPSIS
-    This PowerShell script will create a shortcut for the 'SystemTimeNow.ps1' script on your desktop.
+    This PowerShell script will create a shortcut for the 'GetClipboard.ps1' script on your desktop.
 
     .DESCRIPTION
     This script will copy the PowerShell script and the icon to the specified folder and create a shortcut for the script on your desktop.
@@ -15,8 +15,8 @@
 
     .NOTES
     This script has been tested on Windows 11. It's assumed that your Desktop is redirected to OneDrive.
-    The shortcut will be placed in $env:OneDrive\Desktop\SystemTimeNow.lnk.
-    The PowerShell script and the icon will be saved in $env:APPDATA\SystemTimeNow.
+    The shortcut will be placed in $env:OneDrive\Desktop\GetClipboard.lnk.
+    The PowerShell script and the icon will be saved in $env:APPDATA\GetClipboard.
 
     .PARAMETER
     -InstallPath
@@ -24,7 +24,7 @@
         Required:           false
         Type:               string
         Accepted values:    Any valid path
-        Default value:      $env:APPDATA\SystemTimeNow
+        Default value:      $env:APPDATA\GetClipboard
 
     -Icon
         The icon that will be used for the shortcut.
@@ -43,15 +43,15 @@
     .EXAMPLE
     Make sure to launch the script from the folder where it's located. Otherwise the script will not be able to copy the files to the specified folder.
     .\CreateShortcut.ps1
-    .\CreateShortcut.ps1 -InstallPath "C:\Temp\SystemTimeNow" -Icon "2"
+    .\CreateShortcut.ps1 -InstallPath "C:\Temp\GetClipboard" -Icon "2"
 
 #>
 
 [CmdletBinding()]
 param (
-    [Parameter(Mandatory = $false)][String]$InstallPath = "$env:APPDATA\SystemTimeNow",
+    [Parameter(Mandatory = $false)][String]$InstallPath = "$env:APPDATA\GetClipboard",
     [Parameter(Mandatory = $false)][ValidateSet("1", "2")][String]$Icon = "1",
-    [Parameter(Mandatory = $false)][String]$HotKey = "CTRL+SHIFT+F9"
+    [Parameter(Mandatory = $false)][String]$HotKey
 
 )
 
@@ -63,31 +63,25 @@ if (!(Test-Path -Path $InstallPath)) {
 
 switch ($Icon) {
     "1" {
-        $shortcutIcon = "Clock.ico"
-    }
-    "2" {
-        $shortcutIcon = "WorldClock.ico"
-    }
-    "3"{
-        $shortcutIcon = "DateTime.ico"
+        $shortcutIcon = "GetClipboard.ico"
     }
     Default {
-        $shortcutIcon = "Clock.ico"
+        $shortcutIcon = "GetClipboard.ico"
     }
 }
 
-Copy-Item .\SystemTimeNow.ps1 -Destination $InstallPath -Force
+Copy-Item .\GetClipboard.ps1 -Destination $InstallPath -Force
 Copy-Item .\$shortcutIcon -Destination $InstallPath -Force
 
 # Credits: http://powershellblogger.com/2016/01/create-shortcuts-lnk-or-url-files-with-powershell/
 
 $shell = New-Object -ComObject ("WScript.Shell")
-$shortcut = $shell.CreateShortcut("$env:OneDrive\Desktop\SystemTimeNow.lnk")
+$shortcut = $shell.CreateShortcut("$env:OneDrive\Desktop\GetClipboard.lnk")
 
 $shell = New-Object -ComObject ("WScript.Shell")
-$shortcut = $shell.CreateShortcut("$env:OneDrive\Desktop\SystemTimeNow.lnk")
+$shortcut = $shell.CreateShortcut("$env:OneDrive\Desktop\GetClipboard.lnk")
 $shortcut.TargetPath = "C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe";
-$shortcut.Arguments = "-ExecutionPolicy Bypass -File $InstallPath\SystemTimeNow.ps1";
+$shortcut.Arguments = "-ExecutionPolicy Bypass -File $InstallPath\GetClipboard.ps1";
 $shortcut.WorkingDirectory = "$InstallPath";
 $shortcut.WindowStyle = 7;
 $shortcut.Hotkey = "$HotKey";
@@ -95,11 +89,3 @@ $shortcut.IconLocation = "$InstallPath\$shortcutIcon";
 $shortcut.Description = "System Time Now | https://heusser.pro";
 
 $ShortCut.Save()
-
-Set-Clipboard -Value "SetUpSystemTimeNow"
-
-Start-Process "$env:OneDrive\Desktop\SystemTimeNow.lnk"
-
-Start-Sleep -Seconds 5
-
-Set-Clipboard -Value $null
